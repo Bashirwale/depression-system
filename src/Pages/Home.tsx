@@ -18,22 +18,22 @@ const Home: FC = () => {
           className="w-16 sm:w-20 md:w-24 lg:w-32"
         />
       </header>
-      <main className="mx-auto mt-4 max-w-sm md:max-w-lg lg:max-w-2xl px-4 border-black">
+      <main className="mx-auto mt-5 max-w-sm md:max-w-lg lg:max-w-2xl px-4 border-black">
         <p className="text-base font-semibold">
           Depression can affect anyone, but recovery is possible with proper
           care and support!
         </p>
-        <p className="text-base font-semibold mt-5">
+        <p className="text-base font-semibold mt-6">
           Kindly enter your name and email below to take the text
         </p>
-        <form className="mt-3">
+        <form className="mt-4">
           <div>
             <label htmlFor="name" className="block text-sm font-normal">
               Name
             </label>
             <input
               type="text"
-              className="p-1 border border-black w-full my-2"
+              className="p-1 border border-black w-full my-3 rounded-md"
             />
           </div>
           <div>
@@ -42,7 +42,7 @@ const Home: FC = () => {
             </label>
             <input
               type="email"
-              className="p-1 border border-black w-full my-2"
+              className="p-1 border border-black w-full my-3 rounded-md"
             />
           </div>
           <button
