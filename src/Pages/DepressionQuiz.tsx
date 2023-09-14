@@ -1,5 +1,6 @@
 import React, { FC } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { RootState } from "../Component/Redux/store";
 import {
   setCurrentQuestion,
@@ -12,7 +13,7 @@ const DepressionQuiz: FC = () => {
   const currentQuestion = useSelector(
     (state: RootState) => state.question.currentQuestion
   );
-
+  const navigate = useNavigate();
   // Access the current question and its answer choices
   const questionData = questionsData[currentQuestion];
   const questionText = questionData.question;
@@ -33,14 +34,18 @@ const DepressionQuiz: FC = () => {
       dispatch(setCurrentQuestion(currentQuestion - 1));
     }
   };
+  const handleNavigate = () => {
+    navigate("/");
+    dispatch(setCurrentQuestion(0));
+  };
 
   return (
     <div className="mt-4 md:px-8">
       <p className="text-right w-full p-3">
         {currentQuestion + 1}/{questionsData.length}
       </p>
-      <div className="mx-auto mt-4 max-w-sm md:max-w-lg lg:max-w-2xl px-4 border-black">
-        <div className="flex items-center gap-2 mb-10 md:mb-20">
+      <div className="mx-auto mt-4 max-w-sm md:max-w-lg lg:max-w-2xl px-4 border-black mb-16">
+        <div className="flex gap-2 mb-10 md:mb-20">
           <span>{currentQuestion + 1}.</span>
           <p>{questionText}</p>
         </div>
@@ -71,6 +76,14 @@ const DepressionQuiz: FC = () => {
           </button>
         </div>
       </div>
+      {currentQuestion === questionsData.length - 1 && (
+        <button
+          onClick={handleNavigate}
+          className="flex justify-center my-4 bg-primaryColor capitalize text-white px-10 rounded font-semibold py-2 mx-auto text-center"
+        >
+          submit
+        </button>
+      )}
     </div>
   );
 };
