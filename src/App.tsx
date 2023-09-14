@@ -1,24 +1,24 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { RxAvatar } from "react-icons/rx";
+import Home from "./Pages/Home";
+import DepressionQuiz from "./Pages/DepressionQuiz";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="h-screen">
+      <Router>
+        <nav className="flex items-center justify-between bg-primaryColor p-3 md:p-4 lg:p-5 w-full">
+          <h1 className="text-white text-base sm:text-lg md:text-xl lg:text-2xl capitalize font-normal">
+            depression test
+          </h1>
+          <RxAvatar className="text-2xl text-white" />
+        </nav>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/quiz" element={<DepressionQuiz />} />
+        </Routes>
+      </Router>
     </div>
   );
 }
