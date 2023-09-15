@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React, { FC, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { RootState } from "../Component/Redux/store";
@@ -9,10 +9,12 @@ import {
 import { questionsData } from "../data/questionsData";
 
 const DepressionQuiz: FC = () => {
+  const [selected, setSelected] = useState<string | null>(null);
   const dispatch = useDispatch();
   const currentQuestion = useSelector(
     (state: RootState) => state.question.currentQuestion
   );
+  const userAnswers = useSelector((state: RootState) => state.question.answers);
   const navigate = useNavigate();
   // Access the current question and its answer choices
   const questionData = questionsData[currentQuestion];
@@ -20,9 +22,12 @@ const DepressionQuiz: FC = () => {
   const answerChoices = questionData.answers;
 
   const handleAnswer = (answer: string) => {
-    dispatch(addAnswer(answer));
-    if (currentQuestion < questionsData.length - 1) {
-      dispatch(setCurrentQuestion(currentQuestion + 1));
+    setSelected(answer);
+
+    //only one answer can be selected per question
+    const previousAnswers = userAnswers[currentQuestion];
+    if (previousAnswers !== answer) {
+      dispatch(addAnswer(answer));
     }
   };
   const handleNext = () => {
@@ -51,7 +56,11 @@ const DepressionQuiz: FC = () => {
         </div>
         {answerChoices.map((choice, index) => (
           <button
-            className="text-center border border-black p-2 rounded-md w-full mb-6 md:mb-12"
+            className={
+              selected === choice
+                ? "bg-primaryColor text-white text-center border border-black p-2 rounded-md w-full mb-6 md:mb-12"
+                : "text-center border border-black p-2 rounded-md w-full mb-6 md:mb-12"
+            }
             key={index}
             onClick={() => handleAnswer(choice)}
           >
