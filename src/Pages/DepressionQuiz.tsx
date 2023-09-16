@@ -1,4 +1,4 @@
-import React, { FC, useState } from "react";
+import { FC, useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { RootState } from "../Component/Redux/store";
@@ -9,12 +9,24 @@ import {
 import { questionsData } from "../data/questionsData";
 
 const DepressionQuiz: FC = () => {
-  const [selected, setSelected] = useState<string | null>(null);
   const dispatch = useDispatch();
   const currentQuestion = useSelector(
     (state: RootState) => state.question.currentQuestion
   );
-  const userAnswers = useSelector((state: RootState) => state.question.answers);
+  const userQuestion = useSelector(
+    (state: RootState) => state.question.questions
+  );
+  const userAnswer = useSelector(
+    (state: RootState) => state.question.questions[currentQuestion].answer
+  );
+  const [selected, setSelected] = useState<string | null>(
+    userQuestion[currentQuestion].answer || null
+  );
+
+  useEffect(() => {
+    setSelected(userQuestion[currentQuestion].answer || null);
+  }, [currentQuestion, userQuestion]);
+
   const navigate = useNavigate();
   // Access the current question and its answer choices
   const questionData = questionsData[currentQuestion];
@@ -24,14 +36,12 @@ const DepressionQuiz: FC = () => {
   const handleAnswer = (answer: string) => {
     setSelected(answer);
 
-    //only one answer can be selected per question
-    const previousAnswers = userAnswers[currentQuestion];
-    if (previousAnswers !== answer) {
-      dispatch(addAnswer(answer));
-    }
+    dispatch(addAnswer({ index: currentQuestion, answer }));
   };
   const handleNext = () => {
-    dispatch(setCurrentQuestion(currentQuestion + 1));
+    if (currentQuestion < questionsData.length - 1) {
+      dispatch(setCurrentQuestion(currentQuestion + 1));
+    }
   };
 
   const handlePrevious = () => {
@@ -57,7 +67,7 @@ const DepressionQuiz: FC = () => {
         {answerChoices.map((choice, index) => (
           <button
             className={
-              selected === choice
+              selected === userAnswer && selected === choice
                 ? "bg-primaryColor text-white text-center border border-black p-2 rounded-md w-full mb-6 md:mb-12"
                 : "text-center border border-black p-2 rounded-md w-full mb-6 md:mb-12"
             }
