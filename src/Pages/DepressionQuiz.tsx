@@ -5,6 +5,7 @@ import { RootState } from "../Component/Redux/store";
 import {
   setCurrentQuestion,
   addAnswer,
+  clearAnswers,
 } from "../Component/Redux/Slice/questionSlice";
 import { questionsData } from "../data/questionsData";
 
@@ -50,9 +51,9 @@ const DepressionQuiz: FC = () => {
     }
   };
   const handleSubmit = () => {
-    navigate("/");
-    dispatch(addAnswer({ index: 0, answer: "" }));
+    navigate("/quiz_result");
     dispatch(setCurrentQuestion(0));
+    dispatch(clearAnswers());
     setSelectedAnswer(null);
   };
 
@@ -62,9 +63,9 @@ const DepressionQuiz: FC = () => {
         {currentQuestion + 1}/{questionsData.length}
       </p>
       <div className="mx-auto mt-4 max-w-sm md:max-w-lg lg:max-w-2xl px-4 border-black mb-16">
-        <div className="flex gap-2 mb-10 md:mb-20">
+        <div className="flex gap-2 mb-10 md:mb-20 font-semibold">
           <span>{currentQuestion + 1}.</span>
-          <p>{questionText}</p>
+          <p className="">{questionText}</p>
         </div>
         {answerChoices.map((choice, index) => (
           <button
@@ -88,23 +89,25 @@ const DepressionQuiz: FC = () => {
           >
             prev
           </button>
-          <button
-            onClick={handleNext}
-            disabled={currentQuestion === questionsData.length - 1}
-            className="border border-black py-1 px-4 rounded-md"
-          >
-            next
-          </button>
+
+          {currentQuestion === questionsData.length - 1 ? (
+            <button
+              onClick={handleSubmit}
+              className=" bg-primaryColor capitalize text-white px-4 rounded font-semibold py-1"
+            >
+              submit
+            </button>
+          ) : (
+            <button
+              onClick={handleNext}
+              disabled={currentQuestion === questionsData.length - 1}
+              className="border border-black py-1 px-4 rounded-md"
+            >
+              next
+            </button>
+          )}
         </div>
       </div>
-      {currentQuestion === questionsData.length - 1 && (
-        <button
-          onClick={handleSubmit}
-          className="flex justify-center my-4 bg-primaryColor capitalize text-white px-10 rounded font-semibold py-2 mx-auto text-center"
-        >
-          submit
-        </button>
-      )}
     </div>
   );
 };

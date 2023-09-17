@@ -35,9 +35,15 @@ const questionSlice = createSlice({
     addUserName: (state, action: PayloadAction<string>) => {
       state.userName = action.payload;
     },
+    clearAnswers: (state) => {
+      // Clear all answers by resetting them to null
+      state.questions.forEach((q) => {
+        q.answer = null;
+      });
+    },
   },
 });
 
-export const { setCurrentQuestion, addAnswer, addUserName } =
+export const { setCurrentQuestion, addAnswer, clearAnswers, addUserName } =
   questionSlice.actions;
 export default questionSlice.reducer;

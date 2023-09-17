@@ -1,4 +1,3 @@
-import React from "react";
 import {
   BrowserRouter as Router,
   Routes,
@@ -10,6 +9,7 @@ import Home from "./Pages/Home";
 import { useSelector } from "react-redux";
 import { RootState } from "./Component/Redux/store";
 import DepressionQuiz from "./Pages/DepressionQuiz";
+import DepressionResult from "./Pages/DepressionResult";
 
 function App() {
   const currentUser = useSelector(
@@ -34,6 +34,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/quiz" element={<DepressionQuiz />} />
+          <Route path="/quiz_result" element={<DepressionResult />} />
         </Routes>
       </Router>
     </div>
