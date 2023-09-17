@@ -11,34 +11,43 @@ import { questionsData } from "../data/questionsData";
 
 const DepressionQuiz: FC = () => {
   const dispatch = useDispatch();
+
+  //index of the questions
   const currentQuestion = useSelector(
     (state: RootState) => state.question.currentQuestion
   );
+
   const userQuestion = useSelector(
     (state: RootState) => state.question.questions
   );
+
   const userAnswer = useSelector(
     (state: RootState) => state.question.questions[currentQuestion].answer
   );
+
+  //stores the selected answer locally
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(
     userQuestion[currentQuestion].answer || null
   );
 
   useEffect(() => {
-    setSelectedAnswer(userQuestion[currentQuestion].answer || null);
+    setSelectedAnswer(userQuestion[currentQuestion].answer);
   }, [currentQuestion, userQuestion]);
 
   const navigate = useNavigate();
+
   // Access the current question and its answer choices
   const questionData = questionsData[currentQuestion];
   const questionText = questionData.question;
   const answerChoices = questionData.answers;
 
+  //STORES THE ANSWERS GLOBALLY/LOCALLY TO IT INDIVIDUAL QUESTION INDEX
   const handleAnswer = (answer: string) => {
     setSelectedAnswer(answer);
 
     dispatch(addAnswer({ index: currentQuestion, answer }));
   };
+
   const handleNext = () => {
     if (currentQuestion < questionsData.length - 1 && selectedAnswer !== null) {
       dispatch(setCurrentQuestion(currentQuestion + 1));
@@ -50,6 +59,8 @@ const DepressionQuiz: FC = () => {
       dispatch(setCurrentQuestion(currentQuestion - 1));
     }
   };
+
+  //RESETS THE STORE
   const handleSubmit = () => {
     navigate("/quiz_result");
     dispatch(setCurrentQuestion(0));
@@ -90,7 +101,8 @@ const DepressionQuiz: FC = () => {
             prev
           </button>
 
-          {currentQuestion === questionsData.length - 1 ? (
+          {currentQuestion === questionsData.length - 1 &&
+          selectedAnswer !== null ? (
             <button
               onClick={handleSubmit}
               className=" bg-primaryColor capitalize text-white px-4 rounded font-semibold py-1"

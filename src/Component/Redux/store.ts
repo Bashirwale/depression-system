@@ -1,11 +1,10 @@
 import { configureStore } from "@reduxjs/toolkit";
 
-import questionReducer from "./Slice/questionSlice"; // Import your question slice
+import questionReducer from "./Slice/questionSlice";
 
 const store = configureStore({
   reducer: {
-    question: questionReducer, // Add your question slice to the root reducer
-    // Add other reducers here
+    question: questionReducer,
   },
 });
 export type RootState = ReturnType<typeof store.getState>;

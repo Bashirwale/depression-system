@@ -6,13 +6,17 @@ import mental from "../Component/asset/mental-health.png";
 
 const Home: FC = () => {
   const [name, setName] = useState<string>("");
+
   const dispatch = useDispatch();
+
   const navigate = useNavigate();
+
   const handleSubmit = (e: { preventDefault: () => void }) => {
     e.preventDefault();
     navigate("/quiz");
     dispatch(addUserName(name));
   };
+
   return (
     <div className="mt-4 px-2">
       <header>

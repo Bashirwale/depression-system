@@ -27,7 +27,7 @@ const DepressionResult = () => {
           onClick={handleEndSession}
           className="flex justify-center mt-16 bg-primaryColor capitalize text-white px-10 rounded font-semibold py-2 mx-auto text-center"
         >
-          end session
+          take another test
         </button>
       </div>
     </div>
