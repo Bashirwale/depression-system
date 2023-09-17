@@ -20,11 +20,16 @@ function App() {
       <Router>
         <nav className="flex items-center justify-between bg-primaryColor p-3 md:p-4 lg:p-5 w-full">
           <NavLink to="/">
-            <h1 className="text-white text-base sm:text-lg md:text-xl lg:text-2xl capitalize font-normal">
-              {currentUser.length > 1 ? currentUser : "depression test"}
+            <h1 className="text-white text-base sm:text-lg md:text-xl lg:text-2xl capitalize font-semibold">
+              depression test
             </h1>
           </NavLink>
-          <RxAvatar className="text-2xl text-white" />
+          <div className="flex items-center gap-4">
+            <p className="text-base md:text-lg lg:text-xl text-white capitalize font-semibold">
+              {currentUser}
+            </p>
+            <RxAvatar className="text-2xl text-white font-semibold" />
+          </div>
         </nav>
         <Routes>
           <Route path="/" element={<Home />} />

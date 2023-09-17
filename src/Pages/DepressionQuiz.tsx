@@ -19,12 +19,12 @@ const DepressionQuiz: FC = () => {
   const userAnswer = useSelector(
     (state: RootState) => state.question.questions[currentQuestion].answer
   );
-  const [selected, setSelected] = useState<string | null>(
+  const [selectedAnswer, setSelectedAnswer] = useState<string | null>(
     userQuestion[currentQuestion].answer || null
   );
 
   useEffect(() => {
-    setSelected(userQuestion[currentQuestion].answer || null);
+    setSelectedAnswer(userQuestion[currentQuestion].answer || null);
   }, [currentQuestion, userQuestion]);
 
   const navigate = useNavigate();
@@ -34,12 +34,12 @@ const DepressionQuiz: FC = () => {
   const answerChoices = questionData.answers;
 
   const handleAnswer = (answer: string) => {
-    setSelected(answer);
+    setSelectedAnswer(answer);
 
     dispatch(addAnswer({ index: currentQuestion, answer }));
   };
   const handleNext = () => {
-    if (currentQuestion < questionsData.length - 1) {
+    if (currentQuestion < questionsData.length - 1 && selectedAnswer !== null) {
       dispatch(setCurrentQuestion(currentQuestion + 1));
     }
   };
@@ -49,9 +49,11 @@ const DepressionQuiz: FC = () => {
       dispatch(setCurrentQuestion(currentQuestion - 1));
     }
   };
-  const handleNavigate = () => {
+  const handleSubmit = () => {
     navigate("/");
+    dispatch(addAnswer({ index: 0, answer: "" }));
     dispatch(setCurrentQuestion(0));
+    setSelectedAnswer(null);
   };
 
   return (
@@ -67,7 +69,7 @@ const DepressionQuiz: FC = () => {
         {answerChoices.map((choice, index) => (
           <button
             className={
-              selected === userAnswer && selected === choice
+              selectedAnswer === userAnswer && selectedAnswer === choice
                 ? "bg-primaryColor text-white text-center border border-black p-2 rounded-md w-full mb-6 md:mb-12"
                 : "text-center border border-black p-2 rounded-md w-full mb-6 md:mb-12"
             }
@@ -97,7 +99,7 @@ const DepressionQuiz: FC = () => {
       </div>
       {currentQuestion === questionsData.length - 1 && (
         <button
-          onClick={handleNavigate}
+          onClick={handleSubmit}
           className="flex justify-center my-4 bg-primaryColor capitalize text-white px-10 rounded font-semibold py-2 mx-auto text-center"
         >
           submit
