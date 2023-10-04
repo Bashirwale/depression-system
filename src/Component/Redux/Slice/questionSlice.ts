@@ -4,18 +4,25 @@ import { questionsData } from "../../../data/questionsData";
 interface Question {
   question: string;
   answer: string | null;
+  isDepressed: boolean | null;
 }
 
 interface QuestionState {
   currentQuestion: number;
   questions: Question[];
   userName: string;
+  result: string | null;
 }
 
 const initialState: QuestionState = {
   currentQuestion: 0,
-  questions: questionsData.map((q) => ({ question: q.question, answer: null })),
+  questions: questionsData.map((q) => ({
+    question: q.question,
+    answer: null,
+    isDepressed: null,
+  })),
   userName: "",
+  result: "",
 };
 
 const questionSlice = createSlice({
@@ -27,13 +34,22 @@ const questionSlice = createSlice({
     },
     addAnswer: (
       state,
-      action: PayloadAction<{ index: number; answer: string }>
+      action: PayloadAction<{
+        index: number;
+        answer: string;
+        val: string;
+      }>
     ) => {
-      const { index, answer } = action.payload;
+      const { index, answer, val } = action.payload;
+      const calc = val === "b";
       state.questions[index].answer = answer;
+      state.questions[index].isDepressed = calc;
     },
     addUserName: (state, action: PayloadAction<string>) => {
       state.userName = action.payload;
+    },
+    addDepressedResult: (state, action: PayloadAction<string>) => {
+      state.result = action.payload;
     },
     clearAnswers: (state) => {
       // Clear all answers by resetting them to null
@@ -44,6 +60,11 @@ const questionSlice = createSlice({
   },
 });
 
-export const { setCurrentQuestion, addAnswer, clearAnswers, addUserName } =
-  questionSlice.actions;
+export const {
+  setCurrentQuestion,
+  addAnswer,
+  clearAnswers,
+  addUserName,
+  addDepressedResult,
+} = questionSlice.actions;
 export default questionSlice.reducer;

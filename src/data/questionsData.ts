@@ -1,34 +1,45 @@
 export const questionsData = [
   {
     question: "How are you feeling today?",
-    answers: ["Good", "Not so good"],
+    answers: { a: "Good", b: "Not so good" },
+    depressed: "b",
   },
   {
     question: "Have you been sleeping well?",
-    answers: ["Yes! i have", "No, not really"],
+    answers: { a: "Yes! i have", b: "No, not really" },
+    depressed: "b",
   },
   {
     question: "Are you enjoying your daily activities?",
-    answers: ["Yes!, very well", "No! I've not"],
+    answers: { a: "Yes!, very well", b: "No! I've not" },
+    depressed: "b",
   },
   {
     question: "Are you able to concentrate on tasks?",
-    answers: ["i have", "I've not been able to"],
+    answers: { a: "i have", b: "I've not been able to" },
+    depressed: "b",
   },
   {
     question: "Do you have a loss of appetite?",
-    answers: ["Nope", "Yeah"],
+    answers: { a: "Nope", b: "Yeah" },
+    depressed: "b",
   },
   {
     question: "Have you lost interest in hobbies?",
-    answers: ["No", "Yes"],
+    answers: { a: "No", b: "Yes" },
+    depressed: "b",
   },
   {
     question: "Are you feeling hopeless?",
-    answers: ["No,I always feel happy", "Yes,like I can't do any thing right"],
+    answers: {
+      a: "No,I always feel happy",
+      b: "Yes,like I can't do any thing right",
+    },
+    depressed: "b",
   },
   {
     question: "Do you have thoughts of self-harm?",
-    answers: ["No! never had such thoughts", "Yes, once in a while"],
+    answers: { a: "No! never had such thoughts", b: "Yes, once in a while" },
+    depressed: "b",
   },
 ];

@@ -6,6 +6,7 @@ import {
   setCurrentQuestion,
   addAnswer,
   clearAnswers,
+  addDepressedResult,
 } from "../Component/Redux/Slice/questionSlice";
 import { questionsData } from "../data/questionsData";
 
@@ -39,13 +40,14 @@ const DepressionQuiz: FC = () => {
   // Access the current question and its answer choices
   const questionData = questionsData[currentQuestion];
   const questionText = questionData.question;
-  const answerChoices = questionData.answers;
+  const answerChoiceA = questionData.answers.a;
+  const answerChoiceB = questionData.answers.b;
 
   //STORES THE ANSWERS GLOBALLY/LOCALLY TO IT INDIVIDUAL QUESTION INDEX
-  const handleAnswer = (answer: string) => {
+  const handleAnswer = (answer: string, val: string) => {
     setSelectedAnswer(answer);
-
-    dispatch(addAnswer({ index: currentQuestion, answer }));
+    console.log(answer, "ans", val);
+    dispatch(addAnswer({ index: currentQuestion, answer, val }));
   };
 
   const handleNext = () => {
@@ -61,11 +63,48 @@ const DepressionQuiz: FC = () => {
   };
 
   //RESETS THE STORE
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     navigate("/quiz_result");
     dispatch(setCurrentQuestion(0));
     dispatch(clearAnswers());
     setSelectedAnswer(null);
+    console.log(userQuestion);
+    const depressed = [];
+    const notDepressed = [];
+    const response = userQuestion.forEach((q) => {
+      q.isDepressed === true ? depressed.push(true) : notDepressed.push(false);
+    });
+    console.log(depressed.length, notDepressed.length);
+    const result =
+      depressed.length > notDepressed.length ? "depressed" : "not depressed";
+
+    dispatch(addDepressedResult(result));
+
+    /* const userQuestionsStrings = userQuestion?.map((item) => {
+      return `${item.question} ${item.answer}`;
+    });
+    const payload = { text: userQuestionsStrings };
+    console.log(payload, "payload");
+    const url = "https://depression-analyser.onrender.com/predict";
+
+    try {
+      const response = await fetch(url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
+
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+
+      const data = await response.json();
+      console.log(data);
+    } catch (error) {
+      console.error("Error:", error);
+    } */
   };
 
   return (
@@ -78,19 +117,27 @@ const DepressionQuiz: FC = () => {
           <span>{currentQuestion + 1}.</span>
           <p className="">{questionText}</p>
         </div>
-        {answerChoices.map((choice, index) => (
-          <button
-            className={
-              selectedAnswer === userAnswer && selectedAnswer === choice
-                ? "bg-primaryColor text-white text-center border border-black p-2 rounded-md w-full mb-6 md:mb-12"
-                : "text-center border border-black p-2 rounded-md w-full mb-6 md:mb-12"
-            }
-            key={index}
-            onClick={() => handleAnswer(choice)}
-          >
-            {choice}
-          </button>
-        ))}
+
+        <button
+          className={
+            selectedAnswer === userAnswer && selectedAnswer === answerChoiceA
+              ? "bg-primaryColor text-white text-center border border-black p-2 rounded-md w-full mb-6 md:mb-12"
+              : "text-center border border-black p-2 rounded-md w-full mb-6 md:mb-12"
+          }
+          onClick={() => handleAnswer(answerChoiceA, "a")}
+        >
+          {answerChoiceA}
+        </button>
+        <button
+          className={
+            selectedAnswer === userAnswer && selectedAnswer === answerChoiceB
+              ? "bg-primaryColor text-white text-center border border-black p-2 rounded-md w-full mb-6 md:mb-12"
+              : "text-center border border-black p-2 rounded-md w-full mb-6 md:mb-12"
+          }
+          onClick={() => handleAnswer(answerChoiceB, "b")}
+        >
+          {answerChoiceB}
+        </button>
 
         <div className="flex items-center justify-between w-full mb-6 md:mb-12">
           <button

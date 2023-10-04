@@ -7,6 +7,7 @@ const DepressionResult = () => {
   const currentUser = useSelector(
     (state: RootState) => state.question.userName
   );
+  const quizResult = useSelector((state: RootState) => state.question.result);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -18,10 +19,12 @@ const DepressionResult = () => {
   return (
     <div className="mt-4 md:px-8">
       <div className="mx-auto max-w-sm md:max-w-lg lg:max-w-2xl px-4  my-16">
-        <p className=" text-base md:text-lg lg:text-xl border border-black rounded-sm p-10 sm:p-16 md:p-20 lg:p-24 font-normal">
-          Congratulations <span className="capitalize">{currentUser},</span>{" "}
+        <p className=" text-base md:text-lg lg:text-xl border text-justify border-black rounded-sm p-5 sm:p-10 md:p-16 lg:p-20 font-normal">
+          {quizResult === "depressed"
+            ? "After careful evaluation, it appears that you are experiencing symptoms of depression. Please know that we are here to support you and discuss potential treatment options."
+            : `Congratulations ${currentUser}
           your test shows you are not depressed. It is adviced you do more
-          activities that makes you happy if you feel a little down.
+          activities that makes you happy if you feel a little down.`}
         </p>
         <button
           onClick={handleEndSession}
